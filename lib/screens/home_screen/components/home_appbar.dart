@@ -16,6 +16,7 @@ class HomeAppBar extends StatelessWidget {
       pinned: true,
       floating: true,
       snap: true,
+      elevation: 0,
       leading: _isSearching ? const BackButton() : null,
       title: const HomeSearchBox(),
       titleSpacing: 20.0,
