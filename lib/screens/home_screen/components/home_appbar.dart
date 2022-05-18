@@ -4,7 +4,6 @@ import 'package:tesla_ecommerce_app/screens/home_screen/components/home_searchbo
 import 'package:tesla_ecommerce_app/screens/camera_screen/camera_screen.dart';
 
 class HomeAppBar extends StatelessWidget {
-  //final TextEditingController _searchQueryController = TextEditingController();
   final bool _isSearching = false;
   final String searchQuery = "Search query";
 
@@ -13,7 +12,7 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      toolbarHeight: 80,
+      toolbarHeight: 90,
       pinned: true,
       floating: true,
       snap: true,
@@ -22,7 +21,7 @@ class HomeAppBar extends StatelessWidget {
       titleSpacing: 20.0,
       actions: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 16.0, 20.0, 16.0),
+          padding: const EdgeInsets.fromLTRB(0.0, 21.0, 20.0, 21.0),
           child: TextButton(
             onPressed: () {
               Navigator.push(
@@ -39,7 +38,7 @@ class HomeAppBar extends StatelessWidget {
             ),
             child: const Icon(
               Icons.camera_alt_outlined,
-              color: Color.fromRGBO(162, 162, 162, 1.0)
+              color: Colors.black
             ),
           )
         )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/components/home_appbar.dart';
+import 'package:tesla_ecommerce_app/screens/home_screen/components/product_category_tabs.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,10 +11,11 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: const Scaffold(
+        child: Scaffold(
           body: CustomScrollView(
             slivers: [
-              HomeAppBar()
+              const HomeAppBar(),
+              ProductCategoryTabs(),
             ]
           )
         )
