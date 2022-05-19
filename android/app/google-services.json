@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "736019022760",
+    "project_id": "tesla-ecommerce-app",
+    "storage_bucket": "tesla-ecommerce-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736019022760:android:e45125c0746f822383539d",
+        "android_client_info": {
+          "package_name": "com.example.tesla_ecommerce_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736019022760-ufn50r2sqlbak432jf07fug7k1u455ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKYqD3_ZkeYvp95KcB1HAnlDK6qS_6eVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736019022760-ufn50r2sqlbak432jf07fug7k1u455ml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
