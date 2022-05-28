@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/components/home_appbar.dart';
-import 'package:tesla_ecommerce_app/screens/home_screen/components/product_category_tabs.dart';
 import 'package:tesla_ecommerce_app/screens/home_screen/components/product_list_display.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,19 +8,45 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> tabs = ['All', 'Cars', 'Charging', 'Vehicle Accessories', 'Apparel', 'Lifestyle'];
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: const Scaffold(
-          body: CustomScrollView(
-            slivers: [
-              HomeAppBar(),
-              ProductCategoryTabs(),
-              ProductListDisplay()
-            ]
+        child: Scaffold(
+          body: DefaultTabController(
+            length: tabs.length,
+            child: NestedScrollView(
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                return [
+                  SliverOverlapAbsorber(
+                    handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                    sliver: HomeAppBar(tabs: tabs),
+                  )
+                ];
+              },
+              body: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                children: tabs.map((String name) {
+                  return SafeArea(
+                    child: Builder(
+                      builder: (BuildContext context) {
+                        return CustomScrollView(
+                          slivers: [
+                            SliverOverlapInjector(
+                              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                            ),
+                            ProductListDisplay(tab: name)
+                          ]
+                        );
+                      }
+                    )
+                  );
+                }).toList()
+              )
+            )
           )
         )
-      ),
+      )
     );
   }
 }
