@@ -29,14 +29,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_native_splash: 2.2.0+1
-  camera: 0.9.5+1
-  firebase_core: 1.17.0
+  flutter_native_splash: ^2.2.1
+  camera: ^0.9.6
+  firebase_core: ^1.17.0
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  cloud_firestore: ^3.1.15
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,7 @@ flutter_native_splash:
   color: "#ffffff"
   image: assets/tesla_logo.png
   android_12:
+    color: "#ffffff"
     image: assets/tesla_logo.png
 
 # The following section is specific to Flutter packages.

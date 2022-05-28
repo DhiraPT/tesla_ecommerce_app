@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProductCategoryTabs extends StatefulWidget {
-  ProductCategoryTabs({Key? key}) : super(key: key);
+  const ProductCategoryTabs({Key? key}) : super(key: key);
 
   @override
   State<ProductCategoryTabs> createState() => _ProductCategoryTabsState();

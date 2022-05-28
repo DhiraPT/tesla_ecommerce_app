@@ -12,12 +12,12 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
+        child: const Scaffold(
           body: CustomScrollView(
             slivers: [
-              const HomeAppBar(),
+              HomeAppBar(),
               ProductCategoryTabs(),
-              const ProductListDisplay()
+              ProductListDisplay()
             ]
           )
         )
