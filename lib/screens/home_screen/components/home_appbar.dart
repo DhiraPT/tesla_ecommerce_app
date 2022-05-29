@@ -17,11 +17,14 @@ class HomeAppBar extends StatelessWidget {
 			pinned: true,
 			elevation: 0,
 			leading: _isSearching ? const BackButton() : null,
-			title: const HomeSearchBox(),
-			titleSpacing: 20.0,
+			title: const Padding(
+				padding: EdgeInsets.only(top: 4),
+				child: HomeSearchBox(),
+			),
+			titleSpacing: 15.0,
 			actions: [
 				Padding(
-					padding: const EdgeInsets.fromLTRB(0.0, 21.0, 20.0, 21.0),
+					padding: const EdgeInsets.fromLTRB(0.0, 15.0, 15.0, 10.0),
 					child: TextButton(
 						onPressed: () {
 							Navigator.push(
@@ -35,21 +38,22 @@ class HomeAppBar extends StatelessWidget {
 							shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
 							padding: EdgeInsets.zero,
 							minimumSize: const Size(54, 30),
+							tapTargetSize: MaterialTapTargetSize.shrinkWrap,
 						),
 						child: const Icon(
 							Icons.camera_alt_outlined,
-							color: Colors.black
+							color: Colors.black,
 						),
 					)
 				)
 			],
 			bottom: PreferredSize(
-				preferredSize: const Size.fromHeight(46.0),
+				preferredSize: const Size.fromHeight(30.0),
 				child: SingleChildScrollView(
 					scrollDirection: Axis.horizontal,
 					child: Row(
 						children: [
-							const SizedBox(width: 10.0),
+							const SizedBox(width: 5.0),
 							ButtonsTabBar(
 								backgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
 								unselectedBackgroundColor: Colors.white,
@@ -60,7 +64,7 @@ class HomeAppBar extends StatelessWidget {
 								buttonMargin: const EdgeInsets.symmetric(horizontal: 10.0),
 								tabs: tabs.map((String name) => Tab(text: name)).toList(),
 							),
-							const SizedBox(width: 10.0),
+							const SizedBox(width: 5.0),
 						]
 					)
 				)

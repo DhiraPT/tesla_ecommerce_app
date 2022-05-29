@@ -22,51 +22,47 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
   }
 
   Widget productListDisplayAll(double itemHeight, double itemWidth) {
-    return SafeArea(
-      child: FutureBuilder(
-        future: firestoreService.getAllProducts(),
-        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text("${snapshot.error}"));
-          } else if (snapshot.hasData) {
-            var productItems = snapshot.data as List<Product>;
-            return CustomScrollView(
-              primary: false,
-              slivers: [
-                SliverOverlapInjector(
-                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: (itemWidth / itemHeight),
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return ProductCard(item: productItems[index], itemHeight: itemHeight, itemWidth: itemWidth);
-                      },
-                      childCount: productItems.length,
-                    )
+    return FutureBuilder(
+      future: firestoreService.getAllProducts(),
+      builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text("${snapshot.error}"));
+        } else if (snapshot.hasData) {
+          var productItems = snapshot.data as List<Product>;
+          return CustomScrollView(
+            primary: false,
+            slivers: [
+              SliverOverlapInjector(
+                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                sliver: SliverGrid(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 10.0,
+                    childAspectRatio: (itemWidth / itemHeight),
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return ProductCard(item: productItems[index], itemHeight: itemHeight, itemWidth: itemWidth);
+                    },
+                    childCount: productItems.length,
                   )
                 )
-              ]
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
+              )
+            ]
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
         }
-      )
+      }
     );
   }
 
   Widget productListDisplayOthers(double itemHeight, double itemWidth) {
-    return const SafeArea(
-      child: Text('Others')
-    );
+    return const Text('Others');
   }
 
   @override
@@ -77,10 +73,11 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
     final double itemWidth = size.width / 2;
     final double itemHeight = itemWidth * 1.5;
 
-    if (widget.tab == 'All') {
-      return productListDisplayAll(itemHeight, itemWidth);
-    } else {
-      return productListDisplayOthers(itemHeight, itemWidth);
-    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: (widget.tab == 'All')
+        ? productListDisplayAll(itemHeight, itemWidth)
+        : productListDisplayOthers(itemHeight, itemWidth)
+    );
   }
 }
