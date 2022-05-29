@@ -1,32 +1,71 @@
 import 'package:flutter/material.dart';
 
-class ProductListDisplay extends StatelessWidget {
+import 'package:tesla_ecommerce_app/models/product_model.dart';
+import 'package:tesla_ecommerce_app/screens/home_screen/components/product_card.dart';
+import 'package:tesla_ecommerce_app/utils/firestore_service.dart';
+
+class ProductListDisplay extends StatefulWidget {
   final String tab;
   const ProductListDisplay({Key? key, required this.tab}) : super(key: key);
 
+  @override
+  State<ProductListDisplay> createState() => _ProductListDisplayState();
+}
+
+class _ProductListDisplayState extends State<ProductListDisplay> {
+  late FirestoreService firestoreService;
+
+  @override
+  void initState() {
+    super.initState();
+    firestoreService = FirestoreService();
+  }
+
   Widget productListDisplayAll(double itemHeight, double itemWidth) {
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      sliver: SliverGrid.count(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-        childAspectRatio: (itemWidth / itemHeight),
-        children: const [Text("all")]
-      ),
+    return SafeArea(
+      child: FutureBuilder(
+        future: firestoreService.getAllProducts(),
+        builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text("${snapshot.error}"));
+          } else if (snapshot.hasData) {
+            var productItems = snapshot.data as List<Product>;
+            return CustomScrollView(
+              primary: false,
+              slivers: [
+                SliverOverlapInjector(
+                  handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.0,
+                      childAspectRatio: (itemWidth / itemHeight),
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return ProductCard(item: productItems[index], itemHeight: itemHeight, itemWidth: itemWidth);
+                      },
+                      childCount: productItems.length,
+                    )
+                  )
+                )
+              ]
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        }
+      )
     );
   }
 
   Widget productListDisplayOthers(double itemHeight, double itemWidth) {
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      sliver: SliverGrid.count(
-        crossAxisCount: 2,
-        mainAxisSpacing: 10.0,
-        crossAxisSpacing: 10.0,
-        childAspectRatio: (itemWidth / itemHeight),
-        children: const [Text("others")]
-      ),
+    return const SafeArea(
+      child: Text('Others')
     );
   }
 
@@ -35,10 +74,10 @@ class ProductListDisplay extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     /*24 is for notification bar on Android*/
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
     final double itemWidth = size.width / 2;
+    final double itemHeight = itemWidth * 1.5;
 
-    if (tab == 'All') {
+    if (widget.tab == 'All') {
       return productListDisplayAll(itemHeight, itemWidth);
     } else {
       return productListDisplayOthers(itemHeight, itemWidth);

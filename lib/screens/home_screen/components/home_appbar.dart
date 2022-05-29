@@ -53,8 +53,8 @@ class HomeAppBar extends StatelessWidget {
 							ButtonsTabBar(
 								backgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
 								unselectedBackgroundColor: Colors.white,
-								labelStyle: const TextStyle(color: Colors.black),
-								unselectedLabelStyle: const TextStyle(color: Colors.black),
+								labelStyle: Theme.of(context).textTheme.subtitle2,
+								unselectedLabelStyle: Theme.of(context).textTheme.subtitle2,
 								radius: 10.0,
 								contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
 								buttonMargin: const EdgeInsets.symmetric(horizontal: 10.0),

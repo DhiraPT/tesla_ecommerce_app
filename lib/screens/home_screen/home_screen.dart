@@ -27,20 +27,7 @@ class HomeScreen extends StatelessWidget {
               body: TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: tabs.map((String name) {
-                  return SafeArea(
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        return CustomScrollView(
-                          slivers: [
-                            SliverOverlapInjector(
-                              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                            ),
-                            ProductListDisplay(tab: name)
-                          ]
-                        );
-                      }
-                    )
-                  );
+                  return ProductListDisplay(tab: name);
                 }).toList()
               )
             )
