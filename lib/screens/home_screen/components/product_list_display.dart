@@ -36,7 +36,7 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               ),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
