@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:tesla_ecommerce_app/screens/home_screen/components/home_appbar.dart';
-import 'package:tesla_ecommerce_app/screens/home_screen/components/product_list_display.dart';
+import 'components/home_appbar.dart';
+import 'components/product_list_display.dart';
+import 'components/bottom_navbar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -32,6 +33,7 @@ class HomeScreen extends StatelessWidget {
               )
             )
           ),
+          bottomNavigationBar: const BottomNavBar(),
         )
       )
     );

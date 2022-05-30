@@ -11,8 +11,16 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: Colors.white
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5.0),
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(225, 225, 225, 1.0),
+              spreadRadius: 0.0,
+              blurRadius: 5.0,
+            )
+          ]
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

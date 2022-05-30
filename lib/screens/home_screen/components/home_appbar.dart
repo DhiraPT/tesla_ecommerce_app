@@ -48,26 +48,31 @@ class HomeAppBar extends StatelessWidget {
 				)
 			],
 			bottom: PreferredSize(
-				preferredSize: const Size.fromHeight(30.0),
-				child: SingleChildScrollView(
-					scrollDirection: Axis.horizontal,
-					child: Row(
-						children: [
-							const SizedBox(width: 5.0),
-							ButtonsTabBar(
-								backgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
-								unselectedBackgroundColor: Colors.white,
-								labelStyle: Theme.of(context).textTheme.subtitle2,
-								unselectedLabelStyle: Theme.of(context).textTheme.subtitle2,
-								radius: 10.0,
-								contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
-								buttonMargin: const EdgeInsets.symmetric(horizontal: 10.0),
-								tabs: tabs.map((String name) => Tab(text: name)).toList(),
-							),
-							const SizedBox(width: 5.0),
-						]
-					)
-				)
+				preferredSize: const Size.fromHeight(40.0),
+				child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  const SizedBox(width: 5.0),
+                  ButtonsTabBar(
+                    backgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
+                    unselectedBackgroundColor: Colors.white,
+                    labelStyle: Theme.of(context).textTheme.subtitle2,
+                    unselectedLabelStyle: Theme.of(context).textTheme.subtitle2,
+                    radius: 10.0,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+                    buttonMargin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    tabs: tabs.map((String name) => Tab(text: name)).toList(),
+                  ),
+                  const SizedBox(width: 5.0),
+                ]
+              )
+				    ),
+            const SizedBox(height: 10.0),
+          ]
+        )
 			)
 		);
 	}

@@ -74,7 +74,7 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
     final double itemHeight = itemWidth * 1.5;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 5.0),
       child: (widget.tab == 'All')
         ? productListDisplayAll(itemHeight, itemWidth)
         : productListDisplayOthers(itemHeight, itemWidth)
