@@ -36,12 +36,12 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
                 handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               ),
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
                 sliver: SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 15.0,
+                    crossAxisSpacing: 15.0,
                     childAspectRatio: (itemWidth / itemHeight),
                   ),
                   delegate: SliverChildBuilderDelegate(
@@ -55,7 +55,11 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
             ]
           );
         } else {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation(Colors.black),
+            )
+          );
         }
       }
     );
@@ -73,11 +77,8 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
     final double itemWidth = size.width / 2;
     final double itemHeight = itemWidth * 1.5;
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 5.0),
-      child: (widget.tab == 'All')
-        ? productListDisplayAll(itemHeight, itemWidth)
-        : productListDisplayOthers(itemHeight, itemWidth)
-    );
+    return (widget.tab == 'All')
+      ? productListDisplayAll(itemHeight, itemWidth)
+      : productListDisplayOthers(itemHeight, itemWidth);
   }
 }

@@ -13,7 +13,7 @@ class HomeAppBar extends StatelessWidget {
 	@override
 	Widget build(BuildContext context) {
 		return SliverAppBar(
-			toolbarHeight: 90,
+			toolbarHeight: 80,
 			pinned: true,
 			elevation: 0,
 			leading: _isSearching ? const BackButton() : null,
@@ -34,7 +34,7 @@ class HomeAppBar extends StatelessWidget {
 						},
 						style: TextButton.styleFrom(
 							primary: const Color.fromRGBO(162, 162, 162, 1.0),
-							backgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
+							backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
 							shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
 							padding: EdgeInsets.zero,
 							minimumSize: const Size(54, 30),
@@ -52,25 +52,27 @@ class HomeAppBar extends StatelessWidget {
 				child: Column(
           children: [
             SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  const SizedBox(width: 5.0),
+                  const SizedBox(width: 7.0),
                   ButtonsTabBar(
-                    backgroundColor: const Color.fromRGBO(240, 240, 240, 1.0),
-                    unselectedBackgroundColor: Colors.white,
-                    labelStyle: Theme.of(context).textTheme.subtitle2,
+                    height: 40.0,
+                    backgroundColor: Colors.black,
+                    unselectedBackgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
+                    labelStyle: Theme.of(context).textTheme.subtitle2!.copyWith(color: Colors.white),
                     unselectedLabelStyle: Theme.of(context).textTheme.subtitle2,
                     radius: 10.0,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
-                    buttonMargin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+                    buttonMargin: const EdgeInsets.symmetric(horizontal: 8.0),
                     tabs: tabs.map((String name) => Tab(text: name)).toList(),
                   ),
-                  const SizedBox(width: 5.0),
+                  const SizedBox(width: 7.0),
                 ]
               )
 				    ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
           ]
         )
 			)

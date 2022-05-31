@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tesla Ecommerce App',
       theme: ThemeData(
-        primaryColor: Colors.lightBlue,
+        primaryColor: Colors.white,
         cardColor: Colors.white,
-        backgroundColor: const Color.fromRGBO(250, 250, 250, 1.0),
-        scaffoldBackgroundColor: const Color.fromRGBO(250, 250, 250, 1.0),
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
         appBarTheme:
-            const AppBarTheme(color: Color.fromRGBO(250, 250, 250, 1.0)),
+            const AppBarTheme(color: Colors.white),
         iconTheme: const IconThemeData(color: Colors.black),
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Color(0xFF555555)),
