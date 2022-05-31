@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:tesla_ecommerce_app/firebase_options.dart';
+import 'package:tesla_ecommerce_app/screens/favourites_screen/favourites_screen.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/home_screen.dart';
+import 'package:tesla_ecommerce_app/components/bottom_navbar.dart';
+import 'package:tesla_ecommerce_app/screens/profile_screen/profile_screen.dart';
+import 'package:tesla_ecommerce_app/screens/shopping_cart_screen/shopping_cart_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +19,27 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int pageIndex = 0;
+  List pages = [
+    const HomeScreen(),
+    const FavouritesScreen(),
+    const ShoppingCartScreen(),
+    const ProfileScreen()
+  ];
+
+  void onNavButtonTapped(int index) {
+    setState(() {
+      pageIndex = index;
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -36,7 +59,15 @@ class MyApp extends StatelessWidget {
             const TextSelectionThemeData(cursorColor: Color(0xFF555555)),
         fontFamily: "Montserrat"
       ),
-      home: const HomeScreen(),
+      home: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: Scaffold(
+            body: pages[pageIndex],
+            bottomNavigationBar: BottomNavBar(pageIndex: pageIndex, onNavButtonTapped: onNavButtonTapped),
+          )
+        )
+      )
     );
   }
 }
