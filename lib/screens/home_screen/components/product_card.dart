@@ -48,12 +48,12 @@ class ProductCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(4.0, 4.0, 2.0, 4.0),
-                child: Text(item.title, style: Theme.of(context).textTheme.subtitle2),
+                child: Text(item.title, style: Theme.of(context).textTheme.titleSmall),
               ),
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 4.0),
-                child: Text('\$${item.price.toString()}', style: Theme.of(context).textTheme.subtitle2),
+                child: Text('\$${item.price.toString()}', style: Theme.of(context).textTheme.titleSmall),
               ),
             ]
           ),

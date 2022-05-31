@@ -3,12 +3,12 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tesla_ecommerce_app/firebase_options.dart';
-import 'package:tesla_ecommerce_app/screens/favourites_screen/favourites_screen.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/home_screen.dart';
 import 'package:tesla_ecommerce_app/components/bottom_navbar.dart';
 import 'package:tesla_ecommerce_app/screens/profile_screen/profile_screen.dart';
 import 'package:tesla_ecommerce_app/screens/shopping_cart_screen/shopping_cart_screen.dart';
+import 'package:tesla_ecommerce_app/screens/wishlist_screen/wishlist_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
   int pageIndex = 0;
   List pages = [
     const HomeScreen(),
-    const FavouritesScreen(),
+    const WishlistScreen(),
     const ShoppingCartScreen(),
     const ProfileScreen()
   ];
@@ -57,6 +57,10 @@ class _MyAppState extends State<MyApp> {
         iconTheme: const IconThemeData(color: Colors.black),
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Color(0xFF555555)),
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: Colors.black,
+          displayColor: Colors.black,
+        ),
         fontFamily: "Montserrat"
       ),
       home: SafeArea(

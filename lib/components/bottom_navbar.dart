@@ -34,7 +34,7 @@ class BottomNavBar extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(CupertinoIcons.heart),
-                label: 'Favourites',
+                label: 'Wishlist',
                 activeIcon: Icon(CupertinoIcons.heart_fill),
               ),
               BottomNavigationBarItem(
