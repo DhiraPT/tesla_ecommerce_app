@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/components/home_appbar.dart';
-import 'package:tesla_ecommerce_app/screens/home_screen/components/product_list_display.dart';
+import 'package:tesla_ecommerce_app/screens/home_screen/components/product_list_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           children: tabs.map((String name) {
-            return ProductListDisplay(tab: name);
+            return ProductListView(tab: name);
           }).toList()
         )
       )

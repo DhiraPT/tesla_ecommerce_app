@@ -6,7 +6,7 @@ import 'package:tesla_ecommerce_app/firebase_options.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/home_screen.dart';
 import 'package:tesla_ecommerce_app/components/bottom_navbar.dart';
-import 'package:tesla_ecommerce_app/screens/profile_screen/profile_screen.dart';
+import 'package:tesla_ecommerce_app/screens/profile_and_settings_screen/profile_and_settings_screen.dart';
 import 'package:tesla_ecommerce_app/screens/shopping_cart_screen/shopping_cart_screen.dart';
 import 'package:tesla_ecommerce_app/screens/wishlist_screen/wishlist_screen.dart';
 
@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     const HomeScreen(),
     const WishlistScreen(),
     const ShoppingCartScreen(),
-    const ProfileScreen()
+    const ProfileAndSettingsScreen()
   ];
 
   void onNavButtonTapped(int index) {
@@ -60,6 +60,7 @@ class _MyAppState extends State<MyApp> {
         textTheme: Theme.of(context).textTheme.apply(
           bodyColor: Colors.black,
           displayColor: Colors.black,
+          fontFamily: "Montserrat"
         ),
         fontFamily: "Montserrat"
       ),

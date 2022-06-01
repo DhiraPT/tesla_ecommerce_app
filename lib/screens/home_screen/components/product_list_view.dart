@@ -4,15 +4,15 @@ import 'package:tesla_ecommerce_app/models/product_model.dart';
 import 'package:tesla_ecommerce_app/screens/home_screen/components/product_card.dart';
 import 'package:tesla_ecommerce_app/utils/firestore_service.dart';
 
-class ProductListDisplay extends StatefulWidget {
+class ProductListView extends StatefulWidget {
   final String tab;
-  const ProductListDisplay({Key? key, required this.tab}) : super(key: key);
+  const ProductListView({Key? key, required this.tab}) : super(key: key);
 
   @override
-  State<ProductListDisplay> createState() => _ProductListDisplayState();
+  State<ProductListView> createState() => _ProductListViewState();
 }
 
-class _ProductListDisplayState extends State<ProductListDisplay> {
+class _ProductListViewState extends State<ProductListView> {
   late FirestoreService firestoreService;
 
   @override
@@ -21,7 +21,7 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
     firestoreService = FirestoreService();
   }
 
-  Widget productListDisplayAll(double itemHeight, double itemWidth) {
+  Widget productListViewAll(double itemHeight, double itemWidth) {
     return FutureBuilder(
       future: firestoreService.getAllProducts(),
       builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
@@ -65,7 +65,7 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
     );
   }
 
-  Widget productListDisplayOthers(double itemHeight, double itemWidth) {
+  Widget productListViewOthers(double itemHeight, double itemWidth) {
     return const Text('Others');
   }
 
@@ -78,7 +78,7 @@ class _ProductListDisplayState extends State<ProductListDisplay> {
     final double itemHeight = itemWidth * 1.5;
 
     return (widget.tab == 'All')
-      ? productListDisplayAll(itemHeight, itemWidth)
-      : productListDisplayOthers(itemHeight, itemWidth);
+      ? productListViewAll(itemHeight, itemWidth)
+      : productListViewOthers(itemHeight, itemWidth);
   }
 }
