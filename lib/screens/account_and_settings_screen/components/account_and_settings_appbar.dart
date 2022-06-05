@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProfileAndSettingsAppBar extends StatelessWidget {
-  const ProfileAndSettingsAppBar({Key? key}) : super(key: key);
+class AccountAndSettingsAppBar extends StatelessWidget {
+  const AccountAndSettingsAppBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

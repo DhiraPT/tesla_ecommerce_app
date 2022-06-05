@@ -4,13 +4,12 @@ import 'package:tesla_ecommerce_app/models/category_model.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
 
 class FirestoreService {
-  FirebaseFirestore? _instance;
+  final FirebaseFirestore _instance = FirebaseFirestore.instance;
 
   Future<List<Product>> getAllProducts() async {
     List<Product> productList = [];
-    _instance = FirebaseFirestore.instance;
 
-    final query = await _instance!
+    final query = await _instance
         .collection('products')
         .withConverter(
             fromFirestore: Product.fromFirestore,
@@ -26,9 +25,7 @@ class FirestoreService {
   }
 
   Future<List<String>> getSubcategories(String category) async {
-    _instance = FirebaseFirestore.instance;
-
-    final query = await _instance!
+    final query = await _instance
         .collection('categories')
         .where('name', isEqualTo: category)
         .withConverter(
@@ -43,12 +40,10 @@ class FirestoreService {
     }
   }
 
-  Future<List<Product>> getProductsOnSubcategory(
-      String category, String subcategory) async {
+  Future<List<Product>> getProductsOnSubcategory(String category, String subcategory) async {
     List<Product> productList = [];
-    _instance = FirebaseFirestore.instance;
 
-    final query = await _instance!
+    final query = await _instance
         .collection('products')
         .where('category', isEqualTo: category)
         .where('subcategory', isEqualTo: subcategory)

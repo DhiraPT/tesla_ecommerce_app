@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:tesla_ecommerce_app/services/firestore_service.dart';
+
 import 'package:tesla_ecommerce_app/models/product_model.dart';
 import 'package:tesla_ecommerce_app/screens/home_screen/components/product_card.dart';
-import 'package:tesla_ecommerce_app/utils/firestore_service.dart';
 
 class ProductListView extends StatefulWidget {
   final String tab;

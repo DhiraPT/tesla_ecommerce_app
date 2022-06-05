@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/firebase_options.dart';
+import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/home_screen.dart';
-import 'package:tesla_ecommerce_app/components/bottom_navbar.dart';
-import 'package:tesla_ecommerce_app/screens/profile_and_settings_screen/profile_and_settings_screen.dart';
-import 'package:tesla_ecommerce_app/screens/shopping_cart_screen/shopping_cart_screen.dart';
 import 'package:tesla_ecommerce_app/screens/wishlist_screen/wishlist_screen.dart';
+import 'package:tesla_ecommerce_app/screens/shopping_cart_screen/shopping_cart_screen.dart';
+import 'package:tesla_ecommerce_app/screens/account_and_settings_screen/account_and_settings_screen.dart';
+import 'package:tesla_ecommerce_app/components/bottom_navbar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,34 +18,36 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FlutterNativeSplash.remove();
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatefulWidget {
+final pageIndexProvider = StateProvider<int>(
+  (ref) => 0,
+);
+
+class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  ConsumerState<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  int pageIndex = 0;
+class _MyAppState extends ConsumerState<MyApp> {
   List pages = [
     const HomeScreen(),
     const WishlistScreen(),
     const ShoppingCartScreen(),
-    const ProfileAndSettingsScreen()
+    const AccountAndSettingsScreen()
   ];
 
   void onNavButtonTapped(int index) {
-    setState(() {
-      pageIndex = index;
-    });
+    ref.watch(pageIndexProvider.notifier).update((state) => index);
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final pageIndex = ref.watch(pageIndexProvider);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tesla Ecommerce App',
