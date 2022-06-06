@@ -20,7 +20,11 @@ class _LoginScreenState extends State<LoginScreen> {
             leading: const BackButton(),
             title: const Text('Log In'),
           ),
-          body: const LoginForm()
+          body: const Center(
+            child: SingleChildScrollView(
+              child: LoginForm()
+            )
+          )
         )
       )
     );

@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tesla_ecommerce_app/services/firebase_auth_service.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
 
   @override
-  State<LoginForm> createState() => LoginFormState();
+  ConsumerState<LoginForm> createState() => LoginFormState();
 }
 
-class LoginFormState extends State<LoginForm> {
+class LoginFormState extends ConsumerState<LoginForm> {
+  late FirebaseAuthService firebaseAuthService;
   late TextEditingController _emailTextEditingController;
   late TextEditingController _passwordTextEditingController;
   late TapGestureRecognizer _tapGestureRecognizer;
@@ -19,6 +23,7 @@ class LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
+    firebaseAuthService = FirebaseAuthService();
     _emailTextEditingController = TextEditingController();
     _passwordTextEditingController = TextEditingController();
     _tapGestureRecognizer = TapGestureRecognizer();
@@ -101,7 +106,7 @@ class LoginFormState extends State<LoginForm> {
                   ),
                   onPressed: () {
                     setState(() {
-                        _passwordVisible = !_passwordVisible;
+                      _passwordVisible = !_passwordVisible;
                     });
                   },
                 ),
@@ -122,7 +127,17 @@ class LoginFormState extends State<LoginForm> {
                     .copyWith(color: const Color.fromRGBO(162, 162, 162, 1.0)))
                 )
                 : OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    firebaseAuthService.logIn(_emailTextEditingController.text, _passwordTextEditingController.text)
+                    .then((msg) {
+                      if (msg == 'Login successful') {
+                        EasyLoading.showSuccess(msg);
+                        Navigator.of(context).pop();
+                      } else {
+                        EasyLoading.showError(msg);
+                      }
+                    });
+                  },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.white,
                     side: const BorderSide(width: 2.0, color: Colors.black),
@@ -159,7 +174,15 @@ class LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 15.0),
             child: OutlinedButton.icon(
               onPressed: () {
-                
+                firebaseAuthService.logInWithGoogle()
+                .then((msg) {
+                  if (msg == 'Login successful') {
+                    EasyLoading.showSuccess(msg);
+                    Navigator.of(context).pop();
+                  } else {
+                    EasyLoading.showError(msg);
+                  }
+                });
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.white,

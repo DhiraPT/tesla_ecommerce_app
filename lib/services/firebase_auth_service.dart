@@ -8,7 +8,7 @@ class FirebaseAuthService {
 
   Future signUp(String emailAddress, password) async {
     try {
-      final credential = await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
@@ -23,20 +23,27 @@ class FirebaseAuthService {
     }
   }
 
-  Future logIn(String emailAddress, password) async {
+  Future<String> logIn(String emailAddress, password) async {
     try {
-      final credential = await _auth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: emailAddress, password: password);
+      return 'Login successful';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        return 'User not found';
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        return 'Password incorrect';
+      } else if (e.code == 'invalid-email') {
+        return 'Invalid e-mail address';
+      } else if (e.code == 'user-disabled') {
+        return 'User disabled';
+      } else {
+        return 'Error logging in';
       }
     }
   }
 
-  Future<UserCredential> logInWithGoogle() async {
+  Future<String> logInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -49,8 +56,27 @@ class FirebaseAuthService {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
+    
+    try {
+      await _auth.signInWithCredential(credential);
+      return 'Login successful';
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return 'User not found';
+      } else if (e.code == 'wrong-password') {
+        return 'Password incorrect';
+      } else if (e.code == 'invalid-credential') {
+        return 'Invalid credential';
+      } else if (e.code == 'user-disabled') {
+        return 'User disabled';
+      } else {
+        return 'Error logging in';
+      }
+    }
 
-    // Once signed in, return the UserCredential
-    return await _auth.signInWithCredential(credential);
+  }
+
+  Future<void> logOut() async {
+    await _auth.signOut();
   }
 }

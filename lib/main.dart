@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/firebase_options.dart';
-import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/home_screen.dart';
 import 'package:tesla_ecommerce_app/screens/wishlist_screen/wishlist_screen.dart';
@@ -80,7 +80,8 @@ class _MyAppState extends ConsumerState<MyApp> {
             bottomNavigationBar: BottomNavBar(pageIndex: pageIndex, onNavButtonTapped: onNavButtonTapped),
           )
         )
-      )
+      ),
+      builder: EasyLoading.init(),
     );
   }
 }

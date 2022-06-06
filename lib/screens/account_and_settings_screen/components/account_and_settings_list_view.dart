@@ -32,6 +32,7 @@ class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsL
           const ListTile(title: Text('My Addresses')),
           const ListTile(title: Text('Linked Payment Methods')),
           const ListTile(title: Text('Settings'), enabled: false),
+          ListTile(title: const Text('Log Out'), onTap: () => firebaseAuthService.logOut()),
         ])
       );
     } else {
