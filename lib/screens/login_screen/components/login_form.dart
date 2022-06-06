@@ -104,6 +104,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                   icon: Icon(
                     _passwordVisible ? Icons.visibility : Icons.visibility_off,
                   ),
+                  splashRadius: 10.0,
                   onPressed: () {
                     setState(() {
                       _passwordVisible = !_passwordVisible;

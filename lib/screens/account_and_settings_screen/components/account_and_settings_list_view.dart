@@ -39,20 +39,35 @@ class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsL
       return SliverList(
         delegate: SliverChildListDelegate([
           const ListTile(title: Text('My Account'), enabled: false),
-          ListTile(
-            leading: TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-              }, 
-              child: const Text('Log In')
-            ), 
-            title: TextButton(
-              onPressed: () {}, 
-              child: const Text('Sign Up')
-            )
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(width: 2.0, color: Colors.black),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                  ),
+                  child: Text('Log In', style: Theme.of(context).textTheme.titleSmall)
+                )
+              ),
+              OutlinedButton(
+                onPressed: () {},
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  side: const BorderSide(width: 2.0, color: Colors.black),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                ),
+                child: Text('Sign Up', style: Theme.of(context).textTheme.titleSmall)
+              ),
+            ]
           ),
           const ListTile(title: Text('Settings'), enabled: false),
         ])
