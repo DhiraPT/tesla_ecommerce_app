@@ -56,8 +56,12 @@ class _MyAppState extends ConsumerState<MyApp> {
         cardColor: Colors.white,
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme:
-            const AppBarTheme(color: Colors.white),
+        appBarTheme: const AppBarTheme(
+          color: Colors.white, 
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(color: Colors.black),
+          elevation: 0,
+        ),
         iconTheme: const IconThemeData(color: Colors.black),
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Color(0xFF555555)),

@@ -17,6 +17,12 @@ class HomeSearchBoxState extends State<HomeSearchBox> {
   }
 
   @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextField(
       controller: _textEditingController,
