@@ -2,7 +2,6 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:tesla_ecommerce_app/screens/home_screen/components/home_searchbox.dart';
-import 'package:tesla_ecommerce_app/screens/camera_screen/camera_screen.dart';
 
 class HomeAppBar extends StatelessWidget {
 	final List<String> tabs;
@@ -27,10 +26,7 @@ class HomeAppBar extends StatelessWidget {
 					padding: const EdgeInsets.fromLTRB(0.0, 15.0, 15.0, 10.0),
 					child: TextButton(
 						onPressed: () {
-							Navigator.push(
-								context,
-								MaterialPageRoute(builder: (context) => const CameraScreen()),
-							);
+							Navigator.pushNamed(context, '/camera');
 						},
 						style: TextButton.styleFrom(
 							primary: const Color.fromRGBO(162, 162, 162, 1.0),

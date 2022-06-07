@@ -5,12 +5,10 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/firebase_options.dart';
-
-import 'package:tesla_ecommerce_app/screens/home_screen/home_screen.dart';
-import 'package:tesla_ecommerce_app/screens/wishlist_screen/wishlist_screen.dart';
-import 'package:tesla_ecommerce_app/screens/shopping_cart_screen/shopping_cart_screen.dart';
-import 'package:tesla_ecommerce_app/screens/account_and_settings_screen/account_and_settings_screen.dart';
-import 'package:tesla_ecommerce_app/components/bottom_navbar.dart';
+import 'package:tesla_ecommerce_app/screens/camera_screen/camera_screen.dart';
+import 'package:tesla_ecommerce_app/screens/login_screen/login_screen.dart';
+import 'package:tesla_ecommerce_app/screens/signup_screen/signup_screen.dart';
+import 'package:tesla_ecommerce_app/components/bottom_tab_navigator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,33 +19,12 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-final pageIndexProvider = StateProvider<int>(
-  (ref) => 0,
-);
-
-class MyApp extends ConsumerStatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends ConsumerState<MyApp> {
-  List pages = [
-    const HomeScreen(),
-    const WishlistScreen(),
-    const ShoppingCartScreen(),
-    const AccountAndSettingsScreen()
-  ];
-
-  void onNavButtonTapped(int index) {
-    ref.watch(pageIndexProvider.notifier).update((state) => index);
-  }
-
-  // This widget is the root of your application.
-  @override
   Widget build(BuildContext context) {
-    final pageIndex = ref.watch(pageIndexProvider);
+    // This widget is the root of your application.
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tesla Ecommerce App',
@@ -72,16 +49,14 @@ class _MyAppState extends ConsumerState<MyApp> {
         ),
         fontFamily: "Montserrat"
       ),
-      home: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Scaffold(
-            body: pages[pageIndex],
-            bottomNavigationBar: BottomNavBar(pageIndex: pageIndex, onNavButtonTapped: onNavButtonTapped),
-          )
-        )
-      ),
       builder: EasyLoading.init(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const BottomTabNavigator(),
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/camera': (context) => const CameraScreen(),
+      },
     );
   }
 }

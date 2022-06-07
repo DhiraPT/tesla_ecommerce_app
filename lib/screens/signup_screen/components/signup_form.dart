@@ -1,24 +1,22 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/services/firebase_auth_service.dart';
 
-class LoginForm extends ConsumerStatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+class SignUpForm extends ConsumerStatefulWidget {
+  const SignUpForm({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<LoginForm> createState() => LoginFormState();
+  ConsumerState<SignUpForm> createState() => SignUpFormState();
 }
 
-class LoginFormState extends ConsumerState<LoginForm> {
+class SignUpFormState extends ConsumerState<SignUpForm> {
   late FirebaseAuthService firebaseAuthService;
   late TextEditingController _emailTextEditingController, 
     _passwordTextEditingController;
-  late TapGestureRecognizer _tapGestureRecognizer;
-  late bool _passwordVisible;
-  final _loginFormKey = GlobalKey<FormState>();
+  late bool _passwordVisible, _password2Visible;
+  final _signUpFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -26,22 +24,21 @@ class LoginFormState extends ConsumerState<LoginForm> {
     firebaseAuthService = FirebaseAuthService();
     _emailTextEditingController = TextEditingController();
     _passwordTextEditingController = TextEditingController();
-    _tapGestureRecognizer = TapGestureRecognizer();
     _passwordVisible = false;
+    _password2Visible = false;
   }
 
   @override
   void dispose() {
     _emailTextEditingController.dispose();
     _passwordTextEditingController.dispose();
-    _tapGestureRecognizer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _loginFormKey,
+      key: _signUpFormKey,
       onChanged: () => setState(() {}),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center, 
@@ -82,7 +79,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
             child: TextFormField(
               controller: _passwordTextEditingController,
               obscureText: !_passwordVisible,
@@ -123,24 +120,71 @@ class LoginFormState extends ConsumerState<LoginForm> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
+            child: TextFormField(
+              obscureText: !_password2Visible,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (value) {
+                if (value != _passwordTextEditingController.text) {
+                  return 'Passwords do not match.';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                helperText: '',
+                filled: true,
+                fillColor: const Color.fromRGBO(245, 245, 245, 1.0),
+                prefixIcon: const Icon(Icons.lock_outline, color: Colors.black),
+                hintText: 'Confirm Password',
+                hintStyle:
+                    const TextStyle(color: Color.fromRGBO(162, 162, 162, 1.0)),
+                border: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        width: 3.0, color: Color.fromRGBO(245, 245, 245, 1.0)),
+                    borderRadius: BorderRadius.circular(10.0)),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        width: 3.0, color: Color.fromRGBO(245, 245, 245, 1.0)),
+                    borderRadius: BorderRadius.circular(10.0)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        width: 3.0, color: Color.fromRGBO(162, 162, 162, 1.0)),
+                    borderRadius: BorderRadius.circular(10.0)),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _password2Visible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  splashRadius: 10.0,
+                  onPressed: () {
+                    setState(() {
+                      _password2Visible = !_password2Visible;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
             child: (_emailTextEditingController.text.trim().isEmpty ||
-              _passwordTextEditingController.text.isEmpty)
+              _passwordTextEditingController.text.isEmpty || 
+              !_signUpFormKey.currentState!.validate())
                 ? TextButton(
                   onPressed: null,
                   style: TextButton.styleFrom(
                     backgroundColor: const Color.fromRGBO(245, 245, 245, 1.0),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                   ),
-                  child: Text('Log In', style: Theme.of(context).textTheme.titleSmall!
+                  child: Text('Sign Up', style: Theme.of(context).textTheme.titleSmall!
                     .copyWith(color: const Color.fromRGBO(162, 162, 162, 1.0)))
                 )
                 : OutlinedButton(
                   onPressed: () {
-                    firebaseAuthService.logIn(_emailTextEditingController.text, _passwordTextEditingController.text)
+                    firebaseAuthService.signUp(_emailTextEditingController.text, _passwordTextEditingController.text)
                     .then((msg) {
-                      if (msg == 'Login successful') {
+                      if (msg == 'Sign up successful') {
                         EasyLoading.showSuccess(msg);
-                        Navigator.of(context).pop();
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
                         EasyLoading.showError(msg);
                       }
@@ -151,34 +195,12 @@ class LoginFormState extends ConsumerState<LoginForm> {
                     side: const BorderSide(width: 2.0, color: Colors.black),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                   ),
-                  child: Text('Log In', style: Theme.of(context).textTheme.titleSmall)
+                  child: Text('Sign Up', style: Theme.of(context).textTheme.titleSmall)
                 )
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
             child: Text('OR', textAlign: TextAlign.center),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 15.0),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                children: [
-                  const TextSpan(
-                    text: 'Don\'t have an account yet? ',
-                    style: TextStyle(color: Colors.black)
-                  ),
-                  TextSpan(
-                    text: 'Create one.',
-                    style: const TextStyle(color: Color.fromRGBO(0, 0, 238, 1.0)),
-                    recognizer: _tapGestureRecognizer
-                      ..onTap = () {
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                  )
-                ]
-              )
-            )
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
@@ -188,7 +210,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                 .then((msg) {
                   if (msg == 'Login successful') {
                     EasyLoading.showSuccess(msg);
-                    Navigator.of(context).pop();
+                    Navigator.popUntil(context, ModalRoute.withName('/'));
                   } else {
                     EasyLoading.showError(msg);
                   }

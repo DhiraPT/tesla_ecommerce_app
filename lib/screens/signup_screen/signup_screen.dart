@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:tesla_ecommerce_app/screens/login_screen/components/login_form.dart';
+import 'package:tesla_ecommerce_app/screens/signup_screen/components/signup_form.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,11 +18,11 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Scaffold(
           appBar: AppBar(
             leading: const BackButton(),
-            title: Text('Log In', style: Theme.of(context).textTheme.titleLarge),
+            title: Text('Sign Up', style: Theme.of(context).textTheme.titleLarge),
           ),
           body: const Center(
             child: SingleChildScrollView(
-              child: LoginForm()
+              child: SignUpForm()
             )
           )
         )

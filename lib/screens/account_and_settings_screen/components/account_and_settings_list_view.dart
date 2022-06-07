@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
-import 'package:tesla_ecommerce_app/screens/login_screen/login_screen.dart';
 import 'package:tesla_ecommerce_app/services/firebase_auth_service.dart';
 
 class AccountAndSettingsListView extends ConsumerStatefulWidget {
@@ -45,10 +43,7 @@ class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsL
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: OutlinedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    );
+                    Navigator.pushNamed(context, '/login');
                   },
                   style: OutlinedButton.styleFrom(
                     backgroundColor: Colors.white,
@@ -59,7 +54,9 @@ class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsL
                 )
               ),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
                 style: OutlinedButton.styleFrom(
                   backgroundColor: Colors.white,
                   side: const BorderSide(width: 2.0, color: Colors.black),

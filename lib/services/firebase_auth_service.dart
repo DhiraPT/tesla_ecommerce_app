@@ -6,20 +6,25 @@ class FirebaseAuthService {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future signUp(String emailAddress, password) async {
+  Future<String> signUp(String emailAddress, password) async {
     try {
       await _auth.createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
       );
+      return 'Sign up successful';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        return 'The password provided is too weak';
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        return 'An account with this e-mail address already exists';
+      } else if (e.code == 'invalid-email') {
+        return 'Invalid e-mail address';
+      } else if (e.code == 'operation-not-allowed') {
+        return 'Operation not allowed';
+      } else {
+        return 'Error signing up';
       }
-    } catch (e) {
-      print(e);
     }
   }
 
@@ -56,7 +61,7 @@ class FirebaseAuthService {
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
-    
+
     try {
       await _auth.signInWithCredential(credential);
       return 'Login successful';
@@ -73,7 +78,6 @@ class FirebaseAuthService {
         return 'Error logging in';
       }
     }
-
   }
 
   Future<void> logOut() async {
