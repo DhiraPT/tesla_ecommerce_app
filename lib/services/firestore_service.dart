@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:tesla_ecommerce_app/models/category_model.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
+import 'package:tuple/tuple.dart';
 
 class FirestoreService {
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
@@ -40,21 +43,28 @@ class FirestoreService {
     }
   }
 
-  Future<List<Product>> getProductsOnSubcategory(String category, String subcategory) async {
+  Future<List<Product>> getProductsOnSubcategory(Tuple3<String, String, int> categorySubcategoryCount) async {
     List<Product> productList = [];
 
     final query = await _instance
         .collection('products')
-        .where('category', isEqualTo: category)
-        .where('subcategory', isEqualTo: subcategory)
+        .where('category', isEqualTo: categorySubcategoryCount.item1)
+        .where('subcategory', isEqualTo: categorySubcategoryCount.item2)
         .withConverter(
             fromFirestore: Product.fromFirestore,
             toFirestore: (Product product, _) => product.toFirestore())
         .get();
 
     if (query.docs.isNotEmpty) {
-      for (var element in query.docs) {
-        productList.add(element.data());
+      if (categorySubcategoryCount.item3 == -1) {
+        for (var element in query.docs) {
+          productList.add(element.data());
+        }
+      } else {
+        int count = min(query.docs.length, categorySubcategoryCount.item3);
+        for (var i = 0; i < count; i++) {
+          productList.add(query.docs[i].data());
+        }
       }
     }
     return productList;

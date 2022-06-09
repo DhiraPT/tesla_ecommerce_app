@@ -4,12 +4,14 @@ import 'package:tesla_ecommerce_app/models/product_model.dart';
 
 class ProductCard extends StatelessWidget {
   final Product item;
-  final double itemHeight, itemWidth;
-  const ProductCard({Key? key, required this.item, required this.itemHeight, required this.itemWidth}) : super(key: key);
+  final double itemWidth;
+  final String size;
+  const ProductCard({Key? key, required this.item, required this.itemWidth, required this.size}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: itemWidth,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -46,15 +48,27 @@ class ProductCard extends StatelessWidget {
                     },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4.0, 4.0, 2.0, 4.0),
-                child: Text(item.title, style: Theme.of(context).textTheme.titleSmall),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 4.0),
-                child: Text('\$${item.price.toString()}', style: Theme.of(context).textTheme.titleSmall),
-              ),
+              if (size == 'big') ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(4.0, 4.0, 2.0, 4.0),
+                  child: Text(item.title, style: Theme.of(context).textTheme.titleSmall),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 4.0),
+                  child: Text('\$${item.price.toString()}', style: Theme.of(context).textTheme.titleSmall),
+                ),
+              ] else if (size == 'small') ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(2.0, 2.0, 1.0, 2.0),
+                  child: Text(item.title, style: Theme.of(context).textTheme.labelMedium),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
+                  child: Text('\$${item.price.toString()}', style: Theme.of(context).textTheme.labelMedium),
+                ),
+              ],
             ]
           ),
         )

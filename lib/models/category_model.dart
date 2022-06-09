@@ -16,7 +16,7 @@ class Category {
     final data = snapshot.data();
     return Category(
       name: data?['name'],
-      subcategories: data?['subcategories'],
+      subcategories: List.from(data?['subcategories']),
     );
   }
 

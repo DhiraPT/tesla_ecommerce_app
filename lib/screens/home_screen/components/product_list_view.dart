@@ -1,73 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tesla_ecommerce_app/providers/firestore_provider.dart';
 
-import 'package:tesla_ecommerce_app/services/firestore_service.dart';
-
-import 'package:tesla_ecommerce_app/models/product_model.dart';
 import 'package:tesla_ecommerce_app/screens/home_screen/components/product_card.dart';
+import 'package:tesla_ecommerce_app/screens/home_screen/components/subcategory_card.dart';
 
-class ProductListView extends StatefulWidget {
+class ProductListView extends ConsumerStatefulWidget {
   final String tab;
   const ProductListView({Key? key, required this.tab}) : super(key: key);
 
   @override
-  State<ProductListView> createState() => _ProductListViewState();
+  ConsumerState<ProductListView> createState() => _ProductListViewState();
 }
 
-class _ProductListViewState extends State<ProductListView> {
-  late FirestoreService firestoreService;
-
-  @override
-  void initState() {
-    super.initState();
-    firestoreService = FirestoreService();
-  }
-
+class _ProductListViewState extends ConsumerState<ProductListView> {
   Widget productListViewAll(double itemHeight, double itemWidth) {
-    return FutureBuilder(
-      future: firestoreService.getAllProducts(),
-      builder: (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text("${snapshot.error}"));
-        } else if (snapshot.hasData) {
-          var productItems = snapshot.data as List<Product>;
-          return CustomScrollView(
-            primary: false,
-            slivers: [
-              SliverOverlapInjector(
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-                sliver: SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 15.0,
-                    crossAxisSpacing: 15.0,
-                    childAspectRatio: (itemWidth / itemHeight),
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return ProductCard(item: productItems[index], itemHeight: itemHeight, itemWidth: itemWidth);
-                    },
-                    childCount: productItems.length,
-                  )
+    final productItems = ref.watch(allProductsProvider);
+    return productItems.when(
+      data: (productItems) {
+        return CustomScrollView(
+          primary: false,
+          slivers: [
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              sliver: SliverGrid(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15.0,
+                  crossAxisSpacing: 15.0,
+                  childAspectRatio: (itemWidth / itemHeight),
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return ProductCard(item: productItems[index], itemWidth: itemWidth, size: 'big');
+                  },
+                  childCount: productItems.length,
                 )
               )
-            ]
-          );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Colors.black),
             )
-          );
-        }
+          ]
+        );
+      },
+      error: (Object error, StackTrace? stackTrace) {
+        return Center(child: Text(error.toString()));
+      },
+      loading: () {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(Colors.black),
+          )
+        );
       }
     );
   }
 
-  Widget productListViewOthers(double itemHeight, double itemWidth) {
-    return const Text('Others');
+  Widget productListViewOthers(double itemHeight, double itemWidth, String category) {
+    final subcategoryItems = ref.watch(subcategoriesProvider(category));
+    return subcategoryItems.when(
+      data: (subcategoryItems) {
+        return CustomScrollView(
+          primary: false,
+          slivers: [
+            SliverOverlapInjector(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    if (index != subcategoryItems.length - 1) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: SubcategoryCard(category: category, name: subcategoryItems[index], itemWidth: itemWidth * 0.8, itemHeight: itemHeight * 0.8),
+                      );
+                    } else {
+                      return SubcategoryCard(category: category, name: subcategoryItems[index], itemWidth: itemWidth * 0.8, itemHeight: itemHeight * 0.8);
+                    }
+                  },
+                  childCount: subcategoryItems.length,
+                )
+              )
+            )
+          ]
+        );
+      },
+      error: (Object error, StackTrace? stackTrace) {
+        return Center(child: Text(error.toString()));
+      },
+      loading: () {
+        return const Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation(Colors.black),
+          )
+        );
+      }
+    );
   }
 
   @override
@@ -80,6 +111,6 @@ class _ProductListViewState extends State<ProductListView> {
 
     return (widget.tab == 'All')
       ? productListViewAll(itemHeight, itemWidth)
-      : productListViewOthers(itemHeight, itemWidth);
+      : productListViewOthers(itemHeight, itemWidth, widget.tab);
   }
 }
