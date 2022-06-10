@@ -5,6 +5,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/firebase_options.dart';
+import 'package:tesla_ecommerce_app/product_screen/product_screen.dart';
 import 'package:tesla_ecommerce_app/screens/camera_screen/camera_screen.dart';
 import 'package:tesla_ecommerce_app/screens/login_screen/login_screen.dart';
 import 'package:tesla_ecommerce_app/screens/signup_screen/signup_screen.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
         '/camera': (context) => const CameraScreen(),
+        '/product': (context) => const ProductScreen(),
       },
     );
   }

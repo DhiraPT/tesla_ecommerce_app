@@ -5,16 +5,11 @@ import 'package:tesla_ecommerce_app/providers/firestore_provider.dart';
 import 'package:tesla_ecommerce_app/screens/home_screen/components/product_card.dart';
 import 'package:tesla_ecommerce_app/screens/home_screen/components/subcategory_card.dart';
 
-class ProductListView extends ConsumerStatefulWidget {
+class ProductListView extends ConsumerWidget {
   final String tab;
   const ProductListView({Key? key, required this.tab}) : super(key: key);
 
-  @override
-  ConsumerState<ProductListView> createState() => _ProductListViewState();
-}
-
-class _ProductListViewState extends ConsumerState<ProductListView> {
-  Widget productListViewAll(double itemHeight, double itemWidth) {
+  Widget productListViewAll(BuildContext context, WidgetRef ref, double itemHeight, double itemWidth) {
     final productItems = ref.watch(allProductsProvider);
     return productItems.when(
       data: (productItems) {
@@ -57,7 +52,7 @@ class _ProductListViewState extends ConsumerState<ProductListView> {
     );
   }
 
-  Widget productListViewOthers(double itemHeight, double itemWidth, String category) {
+  Widget productListViewOthers(BuildContext context, WidgetRef ref, double itemHeight, double itemWidth, String category) {
     final subcategoryItems = ref.watch(subcategoriesProvider(category));
     return subcategoryItems.when(
       data: (subcategoryItems) {
@@ -102,15 +97,12 @@ class _ProductListViewState extends ConsumerState<ProductListView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var size = MediaQuery.of(context).size;
-
-    /*24 is for notification bar on Android*/
     final double itemWidth = size.width / 2;
     final double itemHeight = itemWidth * 1.5;
-
-    return (widget.tab == 'All')
-      ? productListViewAll(itemHeight, itemWidth)
-      : productListViewOthers(itemHeight, itemWidth, widget.tab);
+    return (tab == 'All')
+      ? productListViewAll(context, ref, itemHeight, itemWidth)
+      : productListViewOthers(context, ref, itemHeight, itemWidth, tab);
   }
 }
