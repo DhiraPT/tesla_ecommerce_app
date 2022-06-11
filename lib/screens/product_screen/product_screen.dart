@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
-
-import 'package:tesla_ecommerce_app/product_screen/components/product_image_carousel.dart';
+import 'package:tesla_ecommerce_app/screens/product_screen/components/product_image_carousel.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({Key? key}) : super(key: key);

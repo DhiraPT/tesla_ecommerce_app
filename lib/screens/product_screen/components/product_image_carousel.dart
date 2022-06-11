@@ -2,10 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final carouselIndexProvider = StateProvider<int>(
-  (ref) => 0,
-);
-
 class ProductImageCarousel extends ConsumerStatefulWidget {
   final List<String> imageUrls;
   const ProductImageCarousel({Key? key, required this.imageUrls}) : super(key: key);
@@ -15,13 +11,9 @@ class ProductImageCarousel extends ConsumerStatefulWidget {
 }
 
 class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
-  late CarouselController _carouselController;
-
-  @override
-  void initState() {
-    super.initState();
-    _carouselController = CarouselController();
-  }
+  final carouselIndexProvider = StateProvider<int>(
+    (ref) => 0,
+  );
 
   List<Widget> imageSliders() {
     return widget.imageUrls
@@ -50,7 +42,6 @@ class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
       children: [
         CarouselSlider(
           items: imageSliders(),
-          carouselController: _carouselController,
           options: CarouselOptions(
             autoPlay: false,
             enlargeCenterPage: false,
@@ -73,7 +64,7 @@ class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
                 child: Text(
-                  '$carouselIndex/${widget.imageUrls.length}',
+                  '${carouselIndex+1}/${widget.imageUrls.length}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               )

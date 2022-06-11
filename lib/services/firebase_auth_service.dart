@@ -1,16 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tuple/tuple.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future<String> signUp(String emailAddress, password) async {
+  Future<String> signUp(Tuple2<String, String> emailAddressPassword) async {
     try {
       await _auth.createUserWithEmailAndPassword(
-        email: emailAddress,
-        password: password,
+        email: emailAddressPassword.item1,
+        password: emailAddressPassword.item2,
       );
       return 'Sign up successful';
     } on FirebaseAuthException catch (e) {
@@ -28,10 +29,11 @@ class FirebaseAuthService {
     }
   }
 
-  Future<String> logIn(String emailAddress, password) async {
+  Future<String> logIn(Tuple2<String, String> emailAddressPassword) async {
     try {
       await _auth.signInWithEmailAndPassword(
-          email: emailAddress, password: password);
+          email: emailAddressPassword.item1,
+          password: emailAddressPassword.item2);
       return 'Login successful';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -80,7 +82,12 @@ class FirebaseAuthService {
     }
   }
 
-  Future<void> logOut() async {
-    await _auth.signOut();
+  Future<String> logOut() async {
+    try {
+      await _auth.signOut();
+      return 'Logout successful';
+    } catch (e) {
+      return 'Error logging out';
+    }
   }
 }

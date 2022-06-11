@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tesla_ecommerce_app/services/firebase_auth_service.dart';
+import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
+import 'package:tuple/tuple.dart';
 
 class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -12,7 +13,6 @@ class SignUpForm extends ConsumerStatefulWidget {
 }
 
 class SignUpFormState extends ConsumerState<SignUpForm> {
-  late FirebaseAuthService firebaseAuthService;
   late TextEditingController _emailTextEditingController, 
     _passwordTextEditingController;
   late bool _passwordVisible, _password2Visible;
@@ -21,7 +21,6 @@ class SignUpFormState extends ConsumerState<SignUpForm> {
   @override
   void initState() {
     super.initState();
-    firebaseAuthService = FirebaseAuthService();
     _emailTextEditingController = TextEditingController();
     _passwordTextEditingController = TextEditingController();
     _passwordVisible = false;
@@ -180,14 +179,18 @@ class SignUpFormState extends ConsumerState<SignUpForm> {
                 )
                 : OutlinedButton(
                   onPressed: () {
-                    firebaseAuthService.signUp(_emailTextEditingController.text, _passwordTextEditingController.text)
-                    .then((msg) {
+                    ref.watch(signUpProvider(
+                      Tuple2(_emailTextEditingController.text, _passwordTextEditingController.text)
+                    ).future).then((msg) {
                       if (msg == 'Sign up successful') {
                         EasyLoading.showSuccess(msg);
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
                         EasyLoading.showError(msg);
                       }
+                    })
+                    .onError((error, stackTrace) {
+                      Center(child: Text(error.toString()));
                     });
                   },
                   style: OutlinedButton.styleFrom(
@@ -206,14 +209,16 @@ class SignUpFormState extends ConsumerState<SignUpForm> {
             padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15.0),
             child: OutlinedButton.icon(
               onPressed: () {
-                firebaseAuthService.logInWithGoogle()
-                .then((msg) {
+                ref.watch(logInWithGoogleProvider.future).then((msg) {
                   if (msg == 'Login successful') {
                     EasyLoading.showSuccess(msg);
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   } else {
                     EasyLoading.showError(msg);
                   }
+                })
+                .onError((error, stackTrace) {
+                  Center(child: Text(error.toString()));
                 });
               },
               style: OutlinedButton.styleFrom(

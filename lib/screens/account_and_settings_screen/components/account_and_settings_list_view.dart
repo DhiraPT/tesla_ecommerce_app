@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
 import 'package:tesla_ecommerce_app/services/firebase_auth_service.dart';
@@ -11,14 +12,6 @@ class AccountAndSettingsListView extends ConsumerStatefulWidget {
 }
 
 class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsListView> {
-  late FirebaseAuthService firebaseAuthService;
-
-  @override
-  void initState() {
-    super.initState();
-    firebaseAuthService = FirebaseAuthService();
-  }
-
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
@@ -30,7 +23,18 @@ class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsL
           const ListTile(title: Text('My Addresses')),
           const ListTile(title: Text('Linked Payment Methods')),
           const ListTile(title: Text('Settings'), enabled: false),
-          ListTile(title: const Text('Log Out'), onTap: () => firebaseAuthService.logOut()),
+          ListTile(
+            title: const Text('Log Out'),
+            onTap: () {
+              ref.watch(logOutProvider.future).then((msg) {
+                if (msg == 'Logout successful') {
+                  EasyLoading.showSuccess(msg);
+                } else {
+                  EasyLoading.showError(msg);
+                }
+              });
+            }
+          ),
         ])
       );
     } else {
