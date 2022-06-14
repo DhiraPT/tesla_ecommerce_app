@@ -1,22 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tesla_ecommerce_app/screens/product_screen/product_screen_providers.dart';
 
-class ProductImageCarousel extends ConsumerStatefulWidget {
-  final List<String> imageUrls;
-  const ProductImageCarousel({Key? key, required this.imageUrls}) : super(key: key);
+class ProductImageCarousel extends ConsumerWidget {
+  const ProductImageCarousel({Key? key}) : super(key: key);
 
-  @override
-  ConsumerState<ProductImageCarousel> createState() => _ProductImageCarouselState();
-}
-
-class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
-  final carouselIndexProvider = StateProvider<int>(
-    (ref) => 0,
-  );
-
-  List<Widget> imageSliders() {
-    return widget.imageUrls
+  List<Widget> imageSliders(List<String> imageUrls) {
+    return imageUrls
       .map((imageUrl) => Image.network(
         imageUrl,
         fit: BoxFit.cover,
@@ -35,13 +26,14 @@ class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final carouselIndex = ref.watch(carouselIndexProvider);
+    final imageUrls = ref.watch(carouselImageProvider);
     return Stack(
       alignment: AlignmentDirectional.bottomEnd,
       children: [
         CarouselSlider(
-          items: imageSliders(),
+          items: imageSliders(imageUrls),
           options: CarouselOptions(
             autoPlay: false,
             enlargeCenterPage: false,
@@ -64,7 +56,7 @@ class _ProductImageCarouselState extends ConsumerState<ProductImageCarousel> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
                 child: Text(
-                  '${carouselIndex+1}/${widget.imageUrls.length}',
+                  '${carouselIndex+1}/${imageUrls.length}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
               )

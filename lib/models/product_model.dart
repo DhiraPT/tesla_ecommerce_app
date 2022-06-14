@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
-  final String title, category, subcategory, description, defaultImageUrl;
+  final String title, category, subcategory, description;
   final int? price;
   final List<int>? priceRange;
+  final List<String> defaultImageUrls;
   final List<String>? imageUrls;
   final List<VariantGroup>? variantGroups;
 
@@ -14,7 +15,7 @@ class Product {
     required this.description,
     required this.price,
     required this.priceRange,
-    required this.defaultImageUrl,
+    required this.defaultImageUrls,
     required this.imageUrls,
     required this.variantGroups,
   });
@@ -31,7 +32,20 @@ class Product {
       description: data?['description'],
       price: data?['price'],
       priceRange: (data?['priceRange'] != null) ? List.from(data?['priceRange']) : null,
-      defaultImageUrl: data?['defaultImageUrl'],
+      defaultImageUrls: ((){
+        List<String> defaultImageUrls = [];
+        if (data?['imageUrls'] != null) {
+          defaultImageUrls = List.from(data?['imageUrls']);
+        } else if (data?['variants'][0]['styles'] != null) {
+          var variantList = List.from(data?['variants'][0]['styles']);
+          variantList.sort((a, b) => a['name'].compareTo(b['name']));
+          defaultImageUrls = List.from(variantList[0]['imageUrls']);
+        } else if (data?['variants'][0]['colors'] != null) {
+          var variantList = List.from(data?['variants'][0]['colors']);
+          defaultImageUrls = List.from(variantList[0]['imageUrls']);
+        }
+        return defaultImageUrls;
+      }()),
       imageUrls: (data?['imageUrls'] != null) ? List.from(data?['imageUrls']) : null,
       variantGroups: (data?['variants'] != null) ? List.from(data?['variants'].map((e) => VariantGroup.fromJson(e))) : null
     );
@@ -45,7 +59,7 @@ class Product {
       if (description != null) 'description': description,
       if (price != null) 'price': price,
       if (priceRange != null) 'priceRange': priceRange,
-      if (defaultImageUrl != null) 'defaultImageUrl': defaultImageUrl,
+      if (defaultImageUrls != null) 'defaultImageUrl': defaultImageUrls,
       if (imageUrls != null) 'imageUrls': imageUrls,
       if (variantGroups != null) 'variants': variantGroups,
     };
