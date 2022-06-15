@@ -43,7 +43,8 @@ class FirestoreService {
     }
   }
 
-  Future<List<Product>> getProductsOnSubcategory(Tuple3<String, String, int> categorySubcategoryCount) async {
+  Future<List<Product>> getProductsOnSubcategory(
+      Tuple3<String, String, int> categorySubcategoryCount) async {
     List<Product> productList = [];
 
     final query = await _instance
@@ -68,5 +69,22 @@ class FirestoreService {
       }
     }
     return productList;
+  }
+
+  String addToCart(String uid, int id, int quantity, String? productStyle) {
+    try {
+      _instance.collection('users').doc(uid).update({
+        'shoppingCart': FieldValue.arrayUnion([
+          {
+            'productId': id,
+            'quantity': quantity,
+            'variant': {'style': productStyle}
+          }
+        ])
+      });
+      return 'Item successfully added to cart';
+    } catch (e) {
+      return e.toString();
+    }
   }
 }

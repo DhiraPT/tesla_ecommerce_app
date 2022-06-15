@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
+import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
+import 'package:tesla_ecommerce_app/providers/firestore_provider.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_description.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_image_carousel.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_style_selector.dart';
@@ -92,16 +94,40 @@ class ProductScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: TextButton(
                   onPressed: () {
-                    if (variantGroups != []) {
-                      if (variantGroups.contains('styles') && ref.read(productStyleProvider.notifier).state == null) {
+                    final authState = ref.read(authStateProvider);
+                    if (variantGroups.isNotEmpty) {
+                      final productStyle = ref.read(productStyleProvider.notifier).state;
+                      if (variantGroups.contains('styles') && productStyle == null) {
                         EasyLoading.showInfo('Please select a style');
                       } else if (variantGroups.contains('colors')) {
                         //ProductColorSelector();
                       } else if (variantGroups.contains('sizes')) {
                         //ProductSizeSelector();
+                      } else {
+                        if (authState.asData?.value != null) {
+                          String msg = ref.read(firestoreServiceProvider).addToCart(authState.asData!.value!.uid, item.id, quantity, productStyle);
+                          if (msg == 'Item successfully added to cart') {
+                            EasyLoading.showSuccess(msg);
+                          } else {
+                            EasyLoading.showInfo(msg);
+                          }
+                        } else {
+                          //If not logged in
+                          EasyLoading.showInfo('Please log in first');
+                        }
                       }
                     } else {
-                      // Add to cart function
+                      if (authState.asData?.value != null) {
+                        String msg = ref.read(firestoreServiceProvider).addToCart(authState.asData!.value!.uid, item.id, quantity, null);
+                        if (msg == 'Item successfully added to cart') {
+                          EasyLoading.showSuccess(msg);
+                        } else {
+                          EasyLoading.showInfo(msg);
+                        }
+                      } else {
+                        //If not logged in
+                        EasyLoading.showInfo('Please log in first');
+                      }
                     }
                   },
                   style: TextButton.styleFrom(
