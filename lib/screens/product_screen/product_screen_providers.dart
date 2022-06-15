@@ -15,3 +15,7 @@ final carouselIndexProvider = StateProvider.autoDispose<int>(
 final productStyleProvider = StateProvider.autoDispose<String?>(
   (ref) => null,
 );
+
+final productQuantityProvider = StateProvider.autoDispose<int>(
+  (ref) => 1,
+);

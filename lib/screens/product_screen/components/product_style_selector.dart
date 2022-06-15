@@ -15,22 +15,24 @@ class ProductStyleSelector extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Select Style'),
+        Text('Select Style', style: Theme.of(context).textTheme.titleMedium),
         DropdownButtonHideUnderline(
           child: DropdownButton2(
             value: dropdownValue,
             hint: Text(
               '- Select -',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 color: Theme.of(context).hintColor,
               ),
             ),
+            buttonPadding: const EdgeInsets.symmetric(horizontal: 12.0),
+            dropdownElevation: 4,
             items: variantList
               .map<DropdownMenuItem<String>>((Variant variant) {
                 return DropdownMenuItem<String>(
                   value: variant.name,
-                  child: Text(variant.name),
+                  child: Text(variant.name, style: Theme.of(context).textTheme.titleMedium),
                 );
               }).toList(),
             onChanged: (String? newValue) {

@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:tesla_ecommerce_app/models/product_model.dart';
+import 'package:tesla_ecommerce_app/screens/product_screen/product_screen_providers.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   final Product item;
   final double itemWidth;
   final String size;
   const ProductCard({Key? key, required this.item, required this.itemWidth, required this.size}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: (){
+        ref.watch(carouselImageProvider.notifier).update((state) => item.defaultImageUrls);
+        ref.watch(productPriceProvider.notifier).update((state) => 
+          (item.price != null) ? '\$${item.price}' : '\$${item.priceRange![0]} - \$${item.priceRange![1]}');
         Navigator.pushNamed(
           context,
           '/product',
