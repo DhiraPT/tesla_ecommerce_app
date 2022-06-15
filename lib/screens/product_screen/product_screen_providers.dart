@@ -4,6 +4,10 @@ final carouselImageProvider = StateProvider.autoDispose<List<String>>(
   (ref) => [],
 );
 
+final productPriceProvider = StateProvider.autoDispose<String>(
+  (ref) => '',
+);
+
 final carouselIndexProvider = StateProvider.autoDispose<int>(
   (ref) => 0,
 );

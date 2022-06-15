@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
-import 'package:tesla_ecommerce_app/services/firebase_auth_service.dart';
 
 class AccountAndSettingsListView extends ConsumerStatefulWidget {
   const AccountAndSettingsListView({Key? key}) : super(key: key);

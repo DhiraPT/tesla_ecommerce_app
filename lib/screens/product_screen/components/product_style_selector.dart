@@ -36,6 +36,7 @@ class ProductStyleSelector extends ConsumerWidget {
             onChanged: (String? newValue) {
               ref.watch(productStyleProvider.notifier).update((state) => newValue!);
               ref.watch(carouselImageProvider.notifier).update((state) => variantList.firstWhere((e) => e.name == newValue).imageUrls!);
+              item.price ?? ref.watch(productPriceProvider.notifier).update((state) => '\$${variantList.firstWhere((e) => e.name == newValue).price}');
             },
             itemHeight: 40,
           ),
