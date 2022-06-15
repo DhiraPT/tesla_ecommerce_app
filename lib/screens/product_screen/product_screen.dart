@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
+import 'package:tesla_ecommerce_app/screens/product_screen/components/product_description.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_image_carousel.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_price.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_style_selector.dart';
@@ -43,6 +44,10 @@ class ProductScreen extends ConsumerWidget {
                     child: ProductStyleSelector(item: item),
                   ),
                 ).toList(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                child: ProductDescription(description: item.description),
+              ),
             ],
           )
         )
