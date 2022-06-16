@@ -8,6 +8,7 @@ import 'package:tesla_ecommerce_app/screens/product_screen/components/product_de
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_image_carousel.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/components/product_style_selector.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/product_screen_providers.dart';
+import 'package:tuple/tuple.dart';
 
 class ProductScreen extends ConsumerWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -105,12 +106,17 @@ class ProductScreen extends ConsumerWidget {
                         //ProductSizeSelector();
                       } else {
                         if (authState.asData?.value != null) {
-                          String msg = ref.read(firestoreServiceProvider).addToCart(authState.asData!.value!.uid, item.id, quantity, productStyle);
-                          if (msg == 'Item successfully added to cart') {
-                            EasyLoading.showSuccess(msg);
-                          } else {
-                            EasyLoading.showInfo(msg);
-                          }
+                          ref.watch(addToCartProvider(Tuple4(authState.asData!.value!.uid, item.id, quantity, productStyle)).future)
+                          .then((msg) {
+                            if (msg == 'Item successfully added to cart') {
+                              EasyLoading.showSuccess(msg);
+                            } else {
+                              EasyLoading.showInfo(msg);
+                            }
+                          })
+                          .onError((error, stackTrace) {
+                            Center(child: Text(error.toString()));
+                          });
                         } else {
                           //If not logged in
                           EasyLoading.showInfo('Please log in first');
@@ -118,12 +124,17 @@ class ProductScreen extends ConsumerWidget {
                       }
                     } else {
                       if (authState.asData?.value != null) {
-                        String msg = ref.read(firestoreServiceProvider).addToCart(authState.asData!.value!.uid, item.id, quantity, null);
-                        if (msg == 'Item successfully added to cart') {
-                          EasyLoading.showSuccess(msg);
-                        } else {
-                          EasyLoading.showInfo(msg);
-                        }
+                        ref.watch(addToCartProvider(Tuple4(authState.asData!.value!.uid, item.id, quantity, null)).future)
+                        .then((msg) {
+                          if (msg == 'Item successfully added to cart') {
+                            EasyLoading.showSuccess(msg);
+                          } else {
+                            EasyLoading.showInfo(msg);
+                          }
+                        })
+                        .onError((error, stackTrace) {
+                          Center(child: Text(error.toString()));
+                        });
                       } else {
                         //If not logged in
                         EasyLoading.showInfo('Please log in first');

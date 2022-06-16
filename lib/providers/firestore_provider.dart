@@ -22,3 +22,9 @@ final productsOnSubcategoryProvider = FutureProvider.autoDispose.family<List<Pro
     return ref.read(firestoreServiceProvider).getProductsOnSubcategory(categorySubcategoryCount);
   }
 );
+
+final addToCartProvider = FutureProvider.autoDispose.family<String, Tuple4<String, int, int, String?>>(
+  (ref, data) async {
+    return ref.read(firestoreServiceProvider).addToCart(data);
+  }
+);

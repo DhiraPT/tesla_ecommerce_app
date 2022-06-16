@@ -142,7 +142,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                         EasyLoading.showSuccess(msg);
                         Navigator.of(context).pop();
                       } else {
-                        EasyLoading.showError(msg);
+                        EasyLoading.showInfo(msg);
                       }
                     })
                     .onError((error, stackTrace) {
@@ -192,7 +192,7 @@ class LoginFormState extends ConsumerState<LoginForm> {
                     EasyLoading.showSuccess(msg);
                     Navigator.of(context).pop();
                   } else {
-                    EasyLoading.showError(msg);
+                    EasyLoading.showInfo(msg);
                   }
                 })
                 .onError((error, stackTrace) {

@@ -186,7 +186,7 @@ class SignUpFormState extends ConsumerState<SignUpForm> {
                         EasyLoading.showSuccess(msg);
                         Navigator.popUntil(context, ModalRoute.withName('/'));
                       } else {
-                        EasyLoading.showError(msg);
+                        EasyLoading.showInfo(msg);
                       }
                     })
                     .onError((error, stackTrace) {
@@ -214,7 +214,7 @@ class SignUpFormState extends ConsumerState<SignUpForm> {
                     EasyLoading.showSuccess(msg);
                     Navigator.popUntil(context, ModalRoute.withName('/'));
                   } else {
-                    EasyLoading.showError(msg);
+                    EasyLoading.showInfo(msg);
                   }
                 })
                 .onError((error, stackTrace) {

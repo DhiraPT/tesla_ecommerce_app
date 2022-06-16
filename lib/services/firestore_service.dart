@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:tesla_ecommerce_app/models/category_model.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
@@ -71,20 +72,29 @@ class FirestoreService {
     return productList;
   }
 
-  String addToCart(String uid, int id, int quantity, String? productStyle) {
-    try {
-      _instance.collection('users').doc(uid).update({
-        'shoppingCart': FieldValue.arrayUnion([
-          {
-            'productId': id,
-            'quantity': quantity,
-            'variant': {'style': productStyle}
-          }
-        ])
-      });
-      return 'Item successfully added to cart';
-    } catch (e) {
-      return e.toString();
+  Future<String> addToCart(Tuple4<String, int, int, String?> data) async {
+    String uid = data.item1;
+    int id = data.item2;
+    int quantity = data.item3;
+    String? productStyle = data.item4;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if (result == true) {
+      try {
+        _instance.collection('users').doc(uid).update({
+          'shoppingCart': FieldValue.arrayUnion([
+            {
+              'productId': id,
+              'quantity': quantity,
+              'variant': {'style': productStyle}
+            }
+          ])
+        });
+        return 'Item successfully added to cart';
+      } catch (e) {
+        return e.toString();
+      }
+    } else {
+      return 'Network error';
     }
   }
 }

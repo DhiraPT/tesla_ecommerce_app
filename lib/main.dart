@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tesla_ecommerce_app/components/webview.dart';
 import 'package:tesla_ecommerce_app/firebase_options.dart';
+import 'package:tesla_ecommerce_app/providers/firebase_auth_provider.dart';
 import 'package:tesla_ecommerce_app/screens/camera_screen/camera_screen.dart';
 import 'package:tesla_ecommerce_app/screens/login_screen/login_screen.dart';
 import 'package:tesla_ecommerce_app/screens/product_screen/product_screen.dart';
@@ -21,11 +22,12 @@ Future<void> main() async {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
     // This widget is the root of your application.
     return MaterialApp(
       debugShowCheckedModeBanner: false,
