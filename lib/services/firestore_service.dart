@@ -5,6 +5,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:tesla_ecommerce_app/models/category_model.dart';
 import 'package:tesla_ecommerce_app/models/product_model.dart';
+import 'package:tesla_ecommerce_app/models/user_model.dart';
 import 'package:tuple/tuple.dart';
 
 class FirestoreService {
@@ -72,12 +73,44 @@ class FirestoreService {
     return productList;
   }
 
-  Future<String> addToCart(Tuple4<String, int, int, String?> data) async {
+  Future<Product?> getProduct(int id) async {
+    final doc = await _instance
+        .collection('products')
+        .doc(id.toString())
+        .withConverter(
+            fromFirestore: Product.fromFirestore,
+            toFirestore: (Product product, _) => product.toFirestore())
+        .get();
+
+    if (doc.exists) {
+      return doc.data();
+    } else {
+      return null;
+    }
+  }
+
+  Future<String> addToCart(
+      Tuple6<String, int, int, String?, String?, String?> data) async {
     String uid = data.item1;
     int id = data.item2;
     int quantity = data.item3;
     String? productStyle = data.item4;
+    String? productColor = data.item4;
+    String? productSize = data.item4;
     bool result = await InternetConnectionChecker().hasConnection;
+    Map<String, String>? variant;
+    if (productStyle == null && productColor == null && productSize == null) {
+      variant = null;
+    } else {
+      variant = {};
+      if (productStyle != null) {
+        variant['style'] = productStyle;
+      } else if (productColor != null) {
+        variant['color'] = productColor;
+      } else if (productSize != null) {
+        variant['size'] = productSize;
+      }
+    }
     if (result == true) {
       try {
         _instance.collection('users').doc(uid).update({
@@ -85,7 +118,7 @@ class FirestoreService {
             {
               'productId': id,
               'quantity': quantity,
-              'variant': {'style': productStyle}
+              'variant': variant,
             }
           ])
         });
@@ -95,6 +128,66 @@ class FirestoreService {
       }
     } else {
       return 'Network error';
+    }
+  }
+
+  Future<String> changeItemQuantity(Tuple3<String, int, String> data) async {
+    String uid = data.item1;
+    int index = data.item2;
+    String operation = data.item3;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if (result == true) {
+      List<ShoppingCartItem> shoppingCart = await getShoppingCart(uid).first;
+      List<Map<String, dynamic>> shoppingCart2 = [];
+      if (operation == 'add') {
+        shoppingCart[index].quantity += 1;
+      } else if (operation == 'minus') {
+        shoppingCart[index].quantity -= 1;
+        if (shoppingCart[index].quantity == 0) {
+          shoppingCart.removeAt(index);
+        }
+      }
+      for (var shoppingCartItem in shoppingCart) {
+        shoppingCart2.add(shoppingCartItem.toJson());
+      }
+      try {
+        await _instance.collection('users').doc(uid).update({'shoppingCart': []});
+        await _instance
+            .collection('users')
+            .doc(uid)
+            .update({'shoppingCart': FieldValue.arrayUnion(shoppingCart2)});
+        return 'Quantity successfully changed';
+      } catch (e) {
+        return e.toString();
+      }
+    } else {
+      return 'Network error';
+    }
+  }
+
+  Future<User?> getUser(String uid) async {
+    final doc = await _instance
+        .collection('users')
+        .doc(uid)
+        .withConverter(
+            fromFirestore: User.fromFirestore,
+            toFirestore: (User user, _) => user.toFirestore())
+        .get();
+
+    if (doc.exists) {
+      return doc.data();
+    } else {
+      return null;
+    }
+  }
+
+  Stream<List<ShoppingCartItem>> getShoppingCart(String uid) async* {
+    User? user = await getUser(uid);
+
+    if (user != null) {
+      yield user.shoppingCart;
+    } else {
+      yield [];
     }
   }
 }

@@ -106,7 +106,7 @@ class ProductScreen extends ConsumerWidget {
                         //ProductSizeSelector();
                       } else {
                         if (authState.asData?.value != null) {
-                          ref.watch(addToCartProvider(Tuple4(authState.asData!.value!.uid, item.id, quantity, productStyle)).future)
+                          ref.watch(addToCartProvider(Tuple6(authState.asData!.value!.uid, item.id, quantity, productStyle, null, null)).future)
                           .then((msg) {
                             if (msg == 'Item successfully added to cart') {
                               EasyLoading.showSuccess(msg);
@@ -124,7 +124,7 @@ class ProductScreen extends ConsumerWidget {
                       }
                     } else {
                       if (authState.asData?.value != null) {
-                        ref.watch(addToCartProvider(Tuple4(authState.asData!.value!.uid, item.id, quantity, null)).future)
+                        ref.watch(addToCartProvider(Tuple6(authState.asData!.value!.uid, item.id, quantity, null, null, null)).future)
                         .then((msg) {
                           if (msg == 'Item successfully added to cart') {
                             EasyLoading.showSuccess(msg);

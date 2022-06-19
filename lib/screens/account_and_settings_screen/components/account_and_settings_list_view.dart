@@ -13,8 +13,7 @@ class AccountAndSettingsListView extends ConsumerStatefulWidget {
 class _AccountAndSettingsListViewState extends ConsumerState<AccountAndSettingsListView> {
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authStateProvider);
-    if (authState.asData?.value != null) {
+    if (ref.read(authStateProvider).asData?.value != null) {
       return SliverList(
         delegate: SliverChildListDelegate([
           const ListTile(title: Text('My Account'), enabled: false),
